@@ -1,41 +1,31 @@
 <div class="min-h-screen bg-[#07080f] flex flex-col font-sans text-white relative overflow-hidden">
-
-  <div
-    class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#5b6af0]/10 rounded-full blur-[150px] pointer-events-none">
-  </div>
-  <div
-    class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-[#00e5c0]/10 rounded-full blur-[120px] pointer-events-none">
-  </div>
+  
+  <div class="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#5b6af0]/10 rounded-full blur-[150px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-[#00e5c0]/10 rounded-full blur-[120px] pointer-events-none"></div>
   <div class="absolute inset-0 opacity-20 pointer-events-none"
-    style="background-image: linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size: 40px 40px;">
+       style="background-image: linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size: 40px 40px;">
   </div>
 
   <header class="relative z-10 bg-white/[0.02] border-b border-white/5 backdrop-blur-md">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 bg-gradient-to-br from-[#5b6af0] to-[#00e5c0] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-[#5b6af0]/20">
-          RA</div>
+        <div class="w-10 h-10 bg-gradient-to-br from-[#5b6af0] to-[#00e5c0] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-[#5b6af0]/20">RA</div>
         <div>
-          <h1 class="text-xl font-black bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] bg-clip-text text-transparent">
-            ResumeAnalyzer IA</h1>
-          <span class="text-xs text-white/40 tracking-wider uppercase font-semibold">Motor de Selección
-            Inteligente</span>
+          <h1 class="text-xl font-black bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] bg-clip-text text-transparent">ResumeAnalyzer IA</h1>
+          <span class="text-xs text-white/40 tracking-wider uppercase font-semibold">Motor de Selección Inteligente</span>
         </div>
       </div>
       <div class="flex items-center space-x-6">
+        <div class="bg-white/5 border border-white/10 px-4 py-2 rounded-xl flex items-center gap-2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          <span class="text-sm font-bold text-white">{{tokens}} Tokens</span>
+        </div>
         <div class="relative cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" class="text-white/60">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
           <span class="absolute top-1 right-2 w-2.5 h-2.5 bg-[#ff5c7a] rounded-full border-2 border-[#07080f]"></span>
         </div>
-        <div
-          class="flex items-center space-x-3 bg-white/[0.04] border border-white/5 px-3 py-1.5 rounded-full cursor-pointer hover:bg-white/[0.08] transition-colors">
-          <div
-            class="w-8 h-8 bg-gradient-to-br from-[#fb923c] to-[#ff5c7a] rounded-full flex items-center justify-center">
+        <div class="flex items-center space-x-3 bg-white/[0.04] border border-white/5 px-3 py-1.5 rounded-full cursor-pointer hover:bg-white/[0.08] transition-colors">
+          <div class="w-8 h-8 bg-gradient-to-br from-[#fb923c] to-[#ff5c7a] rounded-full flex items-center justify-center">
             <span class="text-white text-xs font-bold">CJ</span>
           </div>
           <span class="hidden md:inline text-sm font-semibold text-white/90">Christopher Jaramillo</span>
@@ -45,76 +35,47 @@
   </header>
 
   <main class="flex-grow container mx-auto px-4 py-8 relative z-10">
-
-    <div *ngIf="errorMsg"
-      class="mb-6 flex items-center gap-3 bg-[#ff5c7a]/10 border border-[#ff5c7a]/20 rounded-xl px-5 py-4 text-sm text-[#ff5c7a] shadow-lg">
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-        </path>
-      </svg>
+    
+    <div *ngIf="errorMsg" class="mb-6 flex items-center gap-3 bg-[#ff5c7a]/10 border border-[#ff5c7a]/20 rounded-xl px-5 py-4 text-sm text-[#ff5c7a] shadow-lg">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
       {{errorMsg}}
     </div>
-    <div *ngIf="successMsg"
-      class="mb-6 flex items-center gap-3 bg-[#00e5c0]/10 border border-[#00e5c0]/20 rounded-xl px-5 py-4 text-sm text-[#00e5c0] shadow-lg">
-      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-      </svg>
+    <div *ngIf="successMsg" class="mb-6 flex items-center gap-3 bg-[#00e5c0]/10 border border-[#00e5c0]/20 rounded-xl px-5 py-4 text-sm text-[#00e5c0] shadow-lg">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
       {{successMsg}}
     </div>
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-
+      
       <div class="xl:col-span-1 space-y-6">
-
-        <div
-          class="bg-white/[0.03] border border-white/10 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden group">
-          <div
-            class="absolute inset-0 bg-gradient-to-br from-[#5b6af0]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          </div>
-
+        
+        <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-6 backdrop-blur-sm relative overflow-hidden group">
+          <div class="absolute inset-0 bg-gradient-to-br from-[#5b6af0]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
           <div class="flex justify-between items-center mb-6 relative">
             <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e5c0" stroke-width="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="17 8 12 3 7 8"></polyline>
-                <line x1="12" y1="3" x2="12" y2="15"></line>
-              </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00e5c0" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
               Carga de Documentos
             </h2>
           </div>
 
-          <div
-            class="relative border-2 border-dashed border-white/20 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-[#5b6af0]/50 hover:bg-white/[0.02]"
-            [ngClass]="{'border-[#00e5c0] bg-[#00e5c0]/5': isDragOver}" (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
-
-            <div
-              class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round" class="text-white/60">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="12" y1="18" x2="12" y2="12"></line>
-                <line x1="9" y1="15" x2="15" y2="15"></line>
-              </svg>
+          <div class="relative border-2 border-dashed border-white/20 rounded-xl p-8 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-[#5b6af0]/50 hover:bg-white/[0.02]"
+               [ngClass]="{'border-[#00e5c0] bg-[#00e5c0]/5': isDragOver}"
+               (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+            
+            <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/60"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
             </div>
             <h3 class="text-sm font-semibold text-white/90 mb-1">Arrastra tus CVs en PDF</h3>
             <p class="text-xs text-white/40 mb-5">Tamaño máximo 10MB por archivo</p>
-
+            
             <div class="flex gap-3 w-full">
-              <label
-                class="flex-1 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] text-white text-sm font-medium py-2.5 rounded-lg cursor-pointer flex items-center justify-center transition-all">
+              <label class="flex-1 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] text-white text-sm font-medium py-2.5 rounded-lg cursor-pointer flex items-center justify-center transition-all">
                 Explorar archivos
                 <input type="file" accept=".pdf" multiple class="hidden" (change)="onFileInputChange($event)">
               </label>
-              <button *ngIf="archivos.length > 0" (click)="clearFiles()"
-                class="px-4 bg-[#ff5c7a]/10 border border-[#ff5c7a]/20 text-[#ff5c7a] hover:bg-[#ff5c7a]/20 rounded-lg transition-all"
-                title="Limpiar todo">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
+              <button *ngIf="archivos.length > 0" (click)="clearFiles()" class="px-4 bg-[#ff5c7a]/10 border border-[#ff5c7a]/20 text-[#ff5c7a] hover:bg-[#ff5c7a]/20 rounded-lg transition-all" title="Limpiar todo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               </button>
             </div>
           </div>
@@ -122,28 +83,16 @@
           <div *ngIf="archivos.length > 0" class="mt-6">
             <div class="flex justify-between text-xs text-white/50 mb-3 px-1">
               <span>{{archivos.length}} archivo(s) listos</span>
-              <span *ngIf="isUploading" class="text-[#00e5c0] flex items-center gap-1"><svg class="animate-spin w-3 h-3"
-                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-                </svg> Procesando...</span>
+              <span *ngIf="isUploading" class="text-[#00e5c0] flex items-center gap-1"><svg class="animate-spin w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Procesando...</span>
             </div>
             <div class="max-h-[160px] overflow-y-auto pr-2 space-y-2 custom-scrollbar">
-              <div *ngFor="let f of archivos; let i = index"
-                class="flex items-center justify-between bg-white/[0.02] border border-white/5 p-2.5 rounded-lg group/file hover:bg-white/[0.04]">
+              <div *ngFor="let f of archivos; let i = index" class="flex items-center justify-between bg-white/[0.02] border border-white/5 p-2.5 rounded-lg group/file hover:bg-white/[0.04]">
                 <div class="flex items-center gap-3 overflow-hidden">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b6af0" stroke-width="2"
-                    class="flex-shrink-0">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                  </svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5b6af0" stroke-width="2" class="flex-shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
                   <span class="text-xs text-white/80 truncate">{{f.name}}</span>
                 </div>
-                <button (click)="removeFile(i)"
-                  class="text-white/30 hover:text-[#ff5c7a] transition-colors ml-2 flex-shrink-0">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
+                <button (click)="removeFile(i)" class="text-white/30 hover:text-[#ff5c7a] transition-colors ml-2 flex-shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
               </div>
             </div>
@@ -151,53 +100,39 @@
         </div>
 
         <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
-          <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            Parámetros de Búsqueda
-          </h2>
-
-          <div
-            class="bg-[#0a0b16] border border-white/10 rounded-xl p-2 mb-4 flex flex-wrap gap-2 min-h-[50px] items-center focus-within:border-[#5b6af0]/60 transition-colors">
-            <div *ngFor="let k of keywords; let i = index"
-              class="bg-gradient-to-r from-[#5b6af0]/20 to-[#00e5c0]/20 border border-white/10 text-white/90 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2">
-              {{k}}
-              <button (click)="removeKeyword(i)" class="hover:text-[#ff5c7a] transition-colors"><svg width="12"
-                  height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg></button>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Parámetros
+            </h2>
+            <span class="text-xs text-white/40 bg-white/5 px-2 py-1 rounded-md">Costo: {{costoAnalisis}} Tokens</span>
+          </div>
+          
+          <div class="bg-[#0a0b16] border border-white/10 rounded-xl p-2 mb-4 flex flex-wrap gap-2 min-h-[50px] items-center focus-within:border-[#5b6af0]/60 transition-colors">
+            <div *ngFor="let k of keywords; let i = index" class="bg-gradient-to-r from-[#5b6af0]/20 to-[#00e5c0]/20 border border-white/10 text-white/90 px-3 py-1.5 rounded-lg text-xs flex items-center gap-2">
+              {{k}} 
+              <button (click)="removeKeyword(i)" class="hover:text-[#ff5c7a] transition-colors"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
             </div>
-            <input type="text" [(ngModel)]="nuevaKeyword" (keyup.enter)="addKeywordFromInput()"
-              placeholder="Escribe un skill y presiona Enter..."
-              class="flex-grow bg-transparent border-none text-sm text-white placeholder-white/30 focus:outline-none focus:ring-0 px-2 min-w-[150px]" />
+            <input type="text" [(ngModel)]="nuevaKeyword" (keyup.enter)="addKeywordFromInput()" placeholder="Escribe un skill y presiona Enter..."
+                   class="flex-grow bg-transparent border-none text-sm text-white placeholder-white/30 focus:outline-none focus:ring-0 px-2 min-w-[150px]" />
           </div>
 
           <div class="flex flex-wrap gap-2 mb-6">
-            <button *ngFor="let sug of ['React', 'Angular', 'Python', 'Liderazgo', 'Scrum']"
-              (click)="addKeywordFromSuggestion(sug)"
-              class="text-xs bg-white/[0.02] border border-white/5 hover:border-[#5b6af0]/50 hover:bg-[#5b6af0]/10 text-white/60 px-3 py-1.5 rounded-full transition-all">
+            <button *ngFor="let sug of ['React', 'Angular', 'Python', 'Liderazgo', 'Scrum']" (click)="addKeywordFromSuggestion(sug)"
+                    class="text-xs bg-white/[0.02] border border-white/5 hover:border-[#5b6af0]/50 hover:bg-[#5b6af0]/10 text-white/60 px-3 py-1.5 rounded-full transition-all">
               + {{sug}}
             </button>
-            <button (click)="clearKeywords()"
-              class="text-xs text-white/30 hover:text-white/60 ml-auto px-2">Limpiar</button>
+            <button (click)="clearKeywords()" class="text-xs text-white/30 hover:text-white/60 ml-auto px-2">Limpiar</button>
           </div>
 
           <button (click)="analizarCVs()" [disabled]="cargando || archivos.length === 0"
-            class="w-full py-4 bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_rgba(91,106,240,0.3)] disabled:opacity-50 disabled:shadow-none flex items-center justify-center gap-3">
+                  class="w-full py-4 bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-[0_0_20px_rgba(91,106,240,0.3)] disabled:opacity-50 disabled:shadow-none flex items-center justify-center gap-3">
             <ng-container *ngIf="cargando; else btnText">
-              <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-              </svg>
+              <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
               Ejecutando Inteligencia Artificial...
             </ng-container>
             <ng-template #btnText>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               Iniciar Análisis Profundo
             </ng-template>
           </button>
@@ -205,97 +140,64 @@
       </div>
 
       <div class="xl:col-span-2 flex flex-col h-full">
-
-        <app-cv-detail *ngIf="selectedCandidate" [candidato]="selectedCandidate" [rank]="selectedRank"
-          (volver)="cerrarDetalle()">
+        
+        <app-cv-detail *ngIf="selectedCandidate" 
+                       [candidato]="selectedCandidate" 
+                       [rank]="selectedRank" 
+                       (volver)="cerrarDetalle()">
         </app-cv-detail>
 
         <ng-container *ngIf="!selectedCandidate">
-          <div *ngIf="cargando"
-            class="flex-grow flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-2xl p-12 min-h-[500px]">
+          <div *ngIf="cargando" class="flex-grow flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-2xl p-12 min-h-[500px]">
             <div class="relative w-32 h-32 mb-8">
               <div class="absolute inset-0 border-4 border-[#5b6af0]/20 rounded-full"></div>
-              <div class="absolute inset-0 border-4 border-[#00e5c0] rounded-full border-t-transparent animate-spin">
-              </div>
+              <div class="absolute inset-0 border-4 border-[#00e5c0] rounded-full border-t-transparent animate-spin"></div>
               <div class="absolute inset-4 border-4 border-[#fb923c]/20 rounded-full"></div>
-              <div
-                class="absolute inset-4 border-4 border-[#ff5c7a] rounded-full border-b-transparent animate-spin animation-delay-500"
-                style="animation-direction: reverse;"></div>
-              <div
-                class="absolute inset-0 flex items-center justify-center text-3xl font-black bg-gradient-to-br from-[#5b6af0] to-[#00e5c0] bg-clip-text text-transparent">
-                AI</div>
+              <div class="absolute inset-4 border-4 border-[#ff5c7a] rounded-full border-b-transparent animate-spin animation-delay-500" style="animation-direction: reverse;"></div>
+              <div class="absolute inset-0 flex items-center justify-center text-3xl font-black bg-gradient-to-br from-[#5b6af0] to-[#00e5c0] bg-clip-text text-transparent">AI</div>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">Procesando Candidatos</h3>
-            <p class="text-white/40 text-center max-w-md text-sm">Extrayendo entidades, evaluando experiencia y
-              calculando afinidad semántica con el perfil ideal...</p>
+            <p class="text-white/40 text-center max-w-md text-sm">Extrayendo entidades, evaluando experiencia y calculando afinidad semántica con el perfil ideal...</p>
           </div>
 
-          <div *ngIf="!cargando && resultados.length === 0 && analisisEjecutado"
-            class="flex-grow flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-2xl p-12 min-h-[500px]">
-            <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                <line x1="11" y1="8" x2="11" y2="14"></line>
-                <line x1="8" y1="11" x2="14" y2="11"></line>
-              </svg>
-            </div>
-            <p class="text-lg text-white/60 font-medium">No se encontraron coincidencias suficientes.</p>
-            <p class="text-sm text-white/40 mt-2">Prueba ajustando las palabras clave o subiendo más CVs.</p>
+          <div *ngIf="!cargando && resultados.length === 0 && analisisEjecutado" class="flex-grow flex flex-col items-center justify-center bg-white/[0.02] border border-white/5 rounded-2xl p-12 min-h-[500px]">
+             <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
+               <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+             </div>
+             <p class="text-lg text-white/60 font-medium">No se encontraron coincidencias suficientes.</p>
+             <p class="text-sm text-white/40 mt-2">Prueba ajustando las palabras clave o subiendo más CVs.</p>
           </div>
 
-          <div *ngIf="!cargando && !analisisEjecutado"
-            class="flex-grow flex flex-col items-center justify-center bg-white/[0.01] border border-white/5 rounded-2xl border-dashed p-12 min-h-[500px]">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
-              class="text-white/10 mb-6">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
-            </svg>
-            <h3 class="text-xl font-bold text-white/30">Panel de Resultados</h3>
-            <p class="text-white/20 text-sm mt-2">Inicia el análisis para ver el ranking de candidatos y métricas
-              detalladas.</p>
+          <div *ngIf="!cargando && !analisisEjecutado" class="flex-grow flex flex-col items-center justify-center bg-white/[0.01] border border-white/5 rounded-2xl border-dashed p-12 min-h-[500px]">
+             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-white/10 mb-6"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+             <h3 class="text-xl font-bold text-white/30">Panel de Resultados</h3>
+             <p class="text-white/20 text-sm mt-2">Inicia el análisis para ver el ranking de candidatos y métricas detalladas.</p>
           </div>
 
           <div *ngIf="!cargando && resultados.length > 0" class="space-y-6">
             <div class="grid grid-cols-3 gap-4">
-              <div
-                class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
-                <div
-                  class="absolute right-0 top-0 w-24 h-24 bg-[#5b6af0]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl">
-                </div>
-                <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Total Analizados</span>
-                <span class="text-3xl font-black text-white">{{archivos.length}}</span>
+              <div class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
+                 <div class="absolute right-0 top-0 w-24 h-24 bg-[#5b6af0]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
+                 <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Total Analizados</span>
+                 <span class="text-3xl font-black text-white">{{archivos.length}}</span>
               </div>
-              <div
-                class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
-                <div
-                  class="absolute right-0 top-0 w-24 h-24 bg-[#00e5c0]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl">
-                </div>
-                <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Afinidad Promedio</span>
-                <div class="flex items-end gap-2">
-                  <span class="text-3xl font-black text-[#00e5c0]">78%</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e5c0" stroke-width="2"
-                    class="mb-1.5">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                    <polyline points="17 6 23 6 23 12"></polyline>
-                  </svg>
-                </div>
+              <div class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
+                 <div class="absolute right-0 top-0 w-24 h-24 bg-[#00e5c0]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
+                 <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Afinidad Promedio</span>
+                 <div class="flex items-end gap-2">
+                   <span class="text-3xl font-black text-[#00e5c0]">78%</span>
+                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00e5c0" stroke-width="2" class="mb-1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                 </div>
               </div>
-              <div
-                class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
-                <div
-                  class="absolute right-0 top-0 w-24 h-24 bg-[#fb923c]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl">
-                </div>
-                <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Match Rate</span>
-                <div class="w-full h-10 mt-2 relative">
-                  <div class="absolute inset-0 bg-white/5 rounded-full overflow-hidden flex">
-                    <div class="h-full bg-gradient-to-r from-[#5b6af0] to-[#00e5c0]" style="width: 65%"></div>
-                  </div>
-                  <span
-                    class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white shadow-sm">65%
-                    Altamente Aptos</span>
-                </div>
+              <div class="bg-white/[0.03] border border-white/10 rounded-xl p-5 flex flex-col justify-center relative overflow-hidden">
+                 <div class="absolute right-0 top-0 w-24 h-24 bg-[#fb923c]/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
+                 <span class="text-xs text-white/40 uppercase font-bold tracking-wider mb-1">Match Rate</span>
+                 <div class="w-full h-10 mt-2 relative">
+                    <div class="absolute inset-0 bg-white/5 rounded-full overflow-hidden flex">
+                      <div class="h-full bg-gradient-to-r from-[#5b6af0] to-[#00e5c0]" style="width: 65%"></div>
+                    </div>
+                    <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white shadow-sm">65% Altamente Aptos</span>
+                 </div>
               </div>
             </div>
 
@@ -305,113 +207,69 @@
                   <h3 class="text-xl font-bold text-white">Ranking de Candidatos</h3>
                   <p class="text-sm text-white/40 mt-1">Ordenados por nivel de coincidencia semántica</p>
                 </div>
-                <div class="flex gap-2">
-                  <button class="bg-white/5 hover:bg-white/10 p-2 rounded-lg text-white/60 transition-colors"><svg
-                      width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                    </svg></button>
-                  <button class="bg-white/5 hover:bg-white/10 p-2 rounded-lg text-white/60 transition-colors"><svg
-                      width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                      <polyline points="7 10 12 15 17 10"></polyline>
-                      <line x1="12" y1="15" x2="12" y2="3"></line>
-                    </svg></button>
-                </div>
               </div>
 
               <div class="space-y-4">
-                <div *ngFor="let r of resultados; let i = index"
-                  class="group bg-[#0a0b16]/50 border border-white/5 hover:border-white/15 rounded-xl p-5 transition-all duration-300 relative overflow-hidden"
-                  [ngClass]="{'bg-gradient-to-r from-[#ffd700]/10 to-transparent border-[#ffd700]/30 shadow-[0_0_15px_rgba(255,215,0,0.1)]': i === 0, 'bg-gradient-to-r from-[#c0c0c0]/10 to-transparent border-[#c0c0c0]/30': i === 1, 'bg-gradient-to-r from-[#cd7f32]/10 to-transparent border-[#cd7f32]/30': i === 2}">
-
-                  <div
-                    class="absolute top-0 right-0 w-32 h-32 opacity-10 rounded-full blur-2xl pointer-events-none transition-all duration-500 group-hover:opacity-20"
-                    [ngStyle]="{'background': i === 0 ? '#ffd700' : (i === 1 ? '#c0c0c0' : (i === 2 ? '#cd7f32' : '#5b6af0'))}">
-                  </div>
+                <div *ngFor="let r of resultados; let i = index" 
+                     class="group bg-[#0a0b16]/50 border border-white/5 hover:border-white/15 rounded-xl p-5 transition-all duration-300 relative overflow-hidden"
+                     [ngClass]="{'bg-gradient-to-r from-[#ffd700]/10 to-transparent border-[#ffd700]/30 shadow-[0_0_15px_rgba(255,215,0,0.1)]': i === 0, 'bg-gradient-to-r from-[#c0c0c0]/10 to-transparent border-[#c0c0c0]/30': i === 1, 'bg-gradient-to-r from-[#cd7f32]/10 to-transparent border-[#cd7f32]/30': i === 2}">
+                  
+                  <div class="absolute top-0 right-0 w-32 h-32 opacity-10 rounded-full blur-2xl pointer-events-none transition-all duration-500 group-hover:opacity-20"
+                       [ngStyle]="{'background': i === 0 ? '#ffd700' : (i === 1 ? '#c0c0c0' : (i === 2 ? '#cd7f32' : '#5b6af0'))}"></div>
 
                   <div class="flex flex-col md:flex-row gap-6 relative z-10">
                     <div class="flex items-start gap-4 md:w-1/3 shrink-0">
                       <div class="relative">
                         <div class="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold shadow-lg"
-                          [ngClass]="{'bg-gradient-to-br from-[#ffd700] to-[#daa520] text-black': i === 0, 'bg-gradient-to-br from-[#e0e0e0] to-[#a0a0a0] text-black': i === 1, 'bg-gradient-to-br from-[#ffb366] to-[#cd7f32] text-black': i === 2, 'bg-white/10 text-white': i > 2}">
+                             [ngClass]="{'bg-gradient-to-br from-[#ffd700] to-[#daa520] text-black': i === 0, 'bg-gradient-to-br from-[#e0e0e0] to-[#a0a0a0] text-black': i === 1, 'bg-gradient-to-br from-[#ffb366] to-[#cd7f32] text-black': i === 2, 'bg-white/10 text-white': i > 2}">
                           {{ getIniciales(r.postulante) }}
                         </div>
-                        <div
-                          class="absolute -bottom-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black border-2 border-[#0a0b16] shadow-sm"
-                          [ngClass]="{'bg-[#ffd700] text-black': i === 0, 'bg-[#c0c0c0] text-black': i === 1, 'bg-[#cd7f32] text-black': i === 2, 'bg-[#2a2b36] text-white/60': i > 2}">
+                        <div class="absolute -bottom-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black border-2 border-[#0a0b16] shadow-sm"
+                             [ngClass]="{'bg-[#ffd700] text-black': i === 0, 'bg-[#c0c0c0] text-black': i === 1, 'bg-[#cd7f32] text-black': i === 2, 'bg-[#2a2b36] text-white/60': i > 2}">
                           #{{i + 1}}
                         </div>
                       </div>
                       <div>
-                        <h4
-                          class="text-lg font-bold text-white group-hover:text-[#00e5c0] transition-colors line-clamp-1">
-                          {{ r.postulante || 'Candidato Confidencial' }}</h4>
-                        <p class="text-xs text-white/40 mt-1 flex items-center gap-1"><svg width="12" height="12"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                          </svg> Analizado exitosamente</p>
+                        <h4 class="text-lg font-bold text-white group-hover:text-[#00e5c0] transition-colors line-clamp-1">{{ r.postulante || 'Candidato Confidencial' }}</h4>
+                        <p class="text-xs text-white/40 mt-1 flex items-center gap-1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Analizado exitosamente</p>
                       </div>
                     </div>
 
                     <div class="flex-grow flex flex-col justify-center">
                       <div class="flex justify-between items-end mb-2">
                         <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Score Global</span>
-                        <span class="text-2xl font-black"
-                          [ngStyle]="{'color': getScore(r) >= 80 ? '#00e5c0' : (getScore(r) >= 60 ? '#fb923c' : '#ff5c7a')}">
+                        <span class="text-2xl font-black" [ngStyle]="{'color': getScore(r) >= 80 ? '#00e5c0' : (getScore(r) >= 60 ? '#fb923c' : '#ff5c7a')}">
                           {{ getScore(r) }}%
                         </span>
                       </div>
-
+                      
                       <div class="w-full bg-white/5 rounded-full h-3 overflow-hidden relative shadow-inner">
-                        <div class="h-full rounded-full transition-all duration-1000 ease-out relative"
-                          [style.width.%]="getScore(r)"
-                          [ngClass]="{'bg-gradient-to-r from-[#00b396] to-[#00e5c0]': getScore(r) >= 80, 'bg-gradient-to-r from-[#d97706] to-[#fb923c]': getScore(r) >= 60 && getScore(r) < 80, 'bg-gradient-to-r from-[#e11d48] to-[#ff5c7a]': getScore(r) < 60}">
-                          <div
-                            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwbDhfOFpNOCAwTDBfOFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-30">
-                          </div>
+                        <div class="h-full rounded-full transition-all duration-1000 ease-out relative" 
+                             [style.width.%]="getScore(r)"
+                             [ngClass]="{'bg-gradient-to-r from-[#00b396] to-[#00e5c0]': getScore(r) >= 80, 'bg-gradient-to-r from-[#d97706] to-[#fb923c]': getScore(r) >= 60 && getScore(r) < 80, 'bg-gradient-to-r from-[#e11d48] to-[#ff5c7a]': getScore(r) < 60}">
+                           <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PC9yZWN0Pgo8cGF0aCBkPSJNMCAwbDhfOFpNOCAwTDBfOFoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-30"></div>
                         </div>
                       </div>
-
+                      
                       <div class="mt-4 grid grid-cols-3 gap-2">
-                        <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
-                          <span class="text-[10px] text-white/40 uppercase">Skills</span>
-                          <span class="text-xs font-bold text-[#00e5c0]">{{ getScore(r) - (i*2) }}%</span>
-                        </div>
-                        <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
-                          <span class="text-[10px] text-white/40 uppercase">Experiencia</span>
-                          <span class="text-xs font-bold text-[#5b6af0]">{{ getScore(r) - (i*3) + 5 > 100 ? 100 :
-                            getScore(r) - (i*3) + 5 }}%</span>
-                        </div>
-                        <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
-                          <span class="text-[10px] text-white/40 uppercase">Afinidad</span>
-                          <span class="text-xs font-bold text-[#fb923c]">{{ getScore(r) - i }}%</span>
-                        </div>
+                         <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
+                           <span class="text-[10px] text-white/40 uppercase">Skills</span>
+                           <span class="text-xs font-bold text-[#00e5c0]">{{ getScore(r) - (i*2) }}%</span>
+                         </div>
+                         <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
+                           <span class="text-[10px] text-white/40 uppercase">Experiencia</span>
+                           <span class="text-xs font-bold text-[#5b6af0]">{{ getScore(r) - (i*3) + 5 > 100 ? 100 : getScore(r) - (i*3) + 5 }}%</span>
+                         </div>
+                         <div class="bg-white/5 rounded pl-2 pr-1 py-1 flex items-center justify-between">
+                           <span class="text-[10px] text-white/40 uppercase">Afinidad</span>
+                           <span class="text-xs font-bold text-[#fb923c]">{{ getScore(r) - i }}%</span>
+                         </div>
                       </div>
                     </div>
 
-                    <div
-                      class="md:w-1/4 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6">
-                      <button
-                        class="w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-semibold text-white transition-all flex items-center justify-center gap-2 mb-2">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2">
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                          <polyline points="14 2 14 8 20 8"></polyline>
-                          <line x1="16" y1="13" x2="8" y2="13"></line>
-                          <line x1="16" y1="17" x2="8" y2="17"></line>
-                          <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        Ver CV Original
-                      </button>
-                      <button (click)="verDetalle(r, i)"
-                        class="w-full py-2 bg-gradient-to-r from-[#5b6af0]/20 to-[#00e5c0]/20 hover:from-[#5b6af0]/30 hover:to-[#00e5c0]/30 border border-[#00e5c0]/30 rounded-lg text-xs font-semibold text-[#00e5c0] transition-all flex items-center justify-center gap-2">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                          stroke-width="2">
-                          <circle cx="12" cy="12" r="10"></circle>
-                          <line x1="12" y1="16" x2="12" y2="12"></line>
-                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
+                    <div class="md:w-1/4 shrink-0 flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-6">
+                      <button (click)="verDetalle(r, i)" class="w-full py-2 bg-gradient-to-r from-[#5b6af0]/20 to-[#00e5c0]/20 hover:from-[#5b6af0]/30 hover:to-[#00e5c0]/30 border border-[#00e5c0]/30 rounded-lg text-xs font-semibold text-[#00e5c0] transition-all flex items-center justify-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                         Análisis Detallado
                       </button>
                     </div>
@@ -426,16 +284,91 @@
   </main>
 
   <footer class="relative z-10 bg-white/[0.01] border-t border-white/5 mt-auto">
-    <div
-      class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center text-xs text-white/30">
+    <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center text-xs text-white/30">
       <div class="flex items-center gap-2 mb-2 md:mb-0">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
         Entorno Seguro SSL · v2.4.0
       </div>
       <div>© 2026 ResumeAnalyzer IA. Todos los derechos reservados.</div>
     </div>
   </footer>
+
+  <div *ngIf="showPlanModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
+    <div class="bg-[#0a0b16] border border-white/10 rounded-2xl w-full max-w-4xl relative overflow-hidden shadow-[0_0_50px_rgba(0,229,192,0.15)]">
+      
+      <button (click)="closePlanModal()" class="absolute top-4 right-4 text-white/40 hover:text-white transition-colors z-10 bg-white/5 hover:bg-white/10 p-2 rounded-full">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="text-center pt-10 pb-6 px-8 relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-[#5b6af0]/20 blur-3xl rounded-full"></div>
+        <h2 class="text-3xl font-black text-white mb-3">Recarga tus Tokens</h2>
+        <p class="text-white/50 text-sm max-w-md mx-auto">Te has quedado sin tokens suficientes para realizar el análisis. Elige un plan y continúa encontrando al talento ideal.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-8 pt-0">
+        
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col relative hover:bg-white/[0.07] transition-colors">
+          <div class="mb-4">
+            <h3 class="text-xl font-bold text-white mb-1">Básico</h3>
+            <p class="text-xs text-white/40">Ideal para pruebas ocasionales</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-black text-white">$4.99</span>
+            <span class="text-sm text-white/40">/pago único</span>
+          </div>
+          <div class="flex items-center gap-3 mb-8 bg-[#fb923c]/10 border border-[#fb923c]/20 rounded-xl p-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div>
+              <div class="text-sm font-bold text-white">20 Tokens</div>
+              <div class="text-[10px] text-white/50">4 Análisis Profundos</div>
+            </div>
+          </div>
+          <button (click)="comprarPlan(20)" class="mt-auto w-full py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all text-sm">Adquirir Básico</button>
+        </div>
+
+        <div class="bg-gradient-to-b from-[#5b6af0]/20 to-[#00e5c0]/10 border border-[#00e5c0]/30 rounded-2xl p-6 flex flex-col relative transform md:-translate-y-4 shadow-xl shadow-[#00e5c0]/10">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+            Mejor Valor
+          </div>
+          <div class="mb-4 mt-2">
+            <h3 class="text-xl font-bold text-white mb-1">Profesional</h3>
+            <p class="text-xs text-white/40">Para reclutadores activos</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-black text-white">$14.99</span>
+            <span class="text-sm text-white/40">/pago único</span>
+          </div>
+          <div class="flex items-center gap-3 mb-8 bg-[#00e5c0]/10 border border-[#00e5c0]/30 rounded-xl p-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5c0" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div>
+              <div class="text-sm font-bold text-white">100 Tokens</div>
+              <div class="text-[10px] text-[#00e5c0] font-semibold">Ahorras un 40%</div>
+            </div>
+          </div>
+          <button (click)="comprarPlan(100)" class="mt-auto w-full py-3 bg-gradient-to-r from-[#5b6af0] to-[#00e5c0] hover:opacity-90 text-white font-bold rounded-xl transition-all shadow-lg text-sm">Adquirir Profesional</button>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col relative hover:bg-white/[0.07] transition-colors">
+          <div class="mb-4">
+            <h3 class="text-xl font-bold text-white mb-1">Corporativo</h3>
+            <p class="text-xs text-white/40">Para agencias de HR</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-black text-white">$49.99</span>
+            <span class="text-sm text-white/40">/pago único</span>
+          </div>
+          <div class="flex items-center gap-3 mb-8 bg-[#5b6af0]/10 border border-[#5b6af0]/20 rounded-xl p-3">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b6af0" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            <div>
+              <div class="text-sm font-bold text-white">500 Tokens</div>
+              <div class="text-[10px] text-white/50">Costo mínimo por análisis</div>
+            </div>
+          </div>
+          <button (click)="comprarPlan(500)" class="mt-auto w-full py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all text-sm">Adquirir Corporativo</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

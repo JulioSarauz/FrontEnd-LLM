@@ -19,7 +19,14 @@ export class CvAnalyzerComponent {
   fechaActual = new Date();
   analisisEjecutado = false;
 
-  constructor(private cvService: CvAnalyzerService) { }
+  tokens = 10;
+  costoAnalisis = 5;
+  showPlanModal = false;
+
+  selectedCandidate: any = null;
+  selectedRank: number = 0;
+
+  constructor(private cvService: CvAnalyzerService) {}
 
   onDragOver(evt: DragEvent) {
     evt.preventDefault();
@@ -49,9 +56,7 @@ export class CvAnalyzerComponent {
 
   private handleFiles(files: FileList | File[]) {
     this.isUploading = true;
-
     const nuevosArchivos = Array.from(files);
-
     setTimeout(() => {
       this.archivos = [...this.archivos, ...nuevosArchivos];
       this.successMsg = `${this.archivos.length} archivo(s) listo(s).`;
@@ -109,6 +114,12 @@ export class CvAnalyzerComponent {
   analizarCVs() {
     this.errorMsg = '';
     this.successMsg = '';
+
+    if (this.tokens < this.costoAnalisis) {
+      this.showPlanModal = true;
+      return;
+    }
+
     this.resultados = [];
     this.analisisEjecutado = true;
 
@@ -121,6 +132,7 @@ export class CvAnalyzerComponent {
       return;
     }
 
+    this.tokens -= this.costoAnalisis;
     this.cargando = true;
 
     this.cvService.evaluarCVs(this.archivos, this.keywords).subscribe({
@@ -129,7 +141,7 @@ export class CvAnalyzerComponent {
           let payload: any = resp;
 
           if (typeof payload === 'string') {
-            try { payload = JSON.parse(payload); } catch { }
+            try { payload = JSON.parse(payload); } catch {}
           }
 
           let arr: any[] = [];
@@ -168,11 +180,10 @@ export class CvAnalyzerComponent {
       error: (err) => {
         this.errorMsg = err?.message || 'Error al analizar los CVs.';
         this.cargando = false;
+        this.tokens += this.costoAnalisis;
       }
     });
   }
-  selectedCandidate: any = null;
-  selectedRank: number = 0;
 
   verDetalle(candidato: any, index: number) {
     this.selectedCandidate = candidato;
@@ -181,5 +192,18 @@ export class CvAnalyzerComponent {
 
   cerrarDetalle() {
     this.selectedCandidate = null;
+  }
+
+  closePlanModal() {
+    this.showPlanModal = false;
+  }
+
+  comprarPlan(tokens: number) {
+    this.tokens += tokens;
+    this.showPlanModal = false;
+    this.successMsg = `¡Se han añadido ${tokens} tokens a tu cuenta!`;
+    setTimeout(() => {
+      this.successMsg = '';
+    }, 4000);
   }
 }
