@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CvAnalyzerService, EvaluacionRespuesta } from 'src/app/services/cv-analyzer.service';
+import { CvAnalyzerService, EvaluacionRespuesta } from '../services/cv-analyzer.service';
 
 @Component({
   selector: 'app-cv-analyzer',
@@ -12,15 +12,15 @@ export class CvAnalyzerComponent {
   nuevaKeyword = '';
   resultados: EvaluacionRespuesta[] = [];
   cargando = false;
+  isUploading = false;
   errorMsg = '';
   successMsg = '';
   isDragOver = false;
   fechaActual = new Date();
   analisisEjecutado = false;
 
-  constructor(private cvService: CvAnalyzerService) {}
+  constructor(private cvService: CvAnalyzerService) { }
 
-  // ========== DRAG & DROP ==========
   onDragOver(evt: DragEvent) {
     evt.preventDefault();
     this.isDragOver = true;
@@ -36,20 +36,28 @@ export class CvAnalyzerComponent {
     this.isDragOver = false;
     const files = evt.dataTransfer?.files;
     if (files && files.length > 0) {
-      this.archivos = [...this.archivos, ...Array.from(files)];
-      this.successMsg = `${files.length} archivo(s) agregado(s).`;
-      this.errorMsg = '';
+      this.handleFiles(files);
     }
   }
 
-  // ========== INPUT FILE ==========
   onFileInputChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
-    this.archivos = [...this.archivos, ...Array.from(input.files)];
-    this.successMsg = `${input.files.length} archivo(s) agregado(s).`;
-    this.errorMsg = '';
+    this.handleFiles(input.files);
     input.value = '';
+  }
+
+  private handleFiles(files: FileList | File[]) {
+    this.isUploading = true;
+
+    const nuevosArchivos = Array.from(files);
+
+    setTimeout(() => {
+      this.archivos = [...this.archivos, ...nuevosArchivos];
+      this.successMsg = `${this.archivos.length} archivo(s) listo(s).`;
+      this.errorMsg = '';
+      this.isUploading = false;
+    }, 500);
   }
 
   removeFile(i: number) {
@@ -60,9 +68,10 @@ export class CvAnalyzerComponent {
     this.archivos = [];
     this.resultados = [];
     this.analisisEjecutado = false;
+    this.successMsg = '';
+    this.errorMsg = '';
   }
 
-  // ========== KEYWORDS ==========
   addKeywordFromInput() {
     const val = (this.nuevaKeyword || '').trim();
     if (!val) return;
@@ -84,7 +93,6 @@ export class CvAnalyzerComponent {
     this.keywords = [];
   }
 
-  // ========== UTILS ==========
   getIniciales(nombre?: string): string {
     const safe = (nombre || '').trim();
     if (!safe) return '??';
@@ -98,7 +106,6 @@ export class CvAnalyzerComponent {
     return Math.max(0, Math.min(100, Math.round(n)));
   }
 
-  // ========== CONSUMO BACKEND ==========
   analizarCVs() {
     this.errorMsg = '';
     this.successMsg = '';
@@ -121,12 +128,10 @@ export class CvAnalyzerComponent {
         try {
           let payload: any = resp;
 
-          // Si vino como string, intentar parsear
           if (typeof payload === 'string') {
-            try { payload = JSON.parse(payload); } catch { /* ignorar */ }
+            try { payload = JSON.parse(payload); } catch { }
           }
 
-          // Extraer arreglo de resultados
           let arr: any[] = [];
           if (Array.isArray(payload)) {
             arr = payload;
@@ -138,7 +143,6 @@ export class CvAnalyzerComponent {
             arr = payload.data.RespuestaModelo;
           }
 
-          // Normalizar, filtrar y ordenar de MAYOR a MENOR puntuación
           this.resultados = (arr || [])
             .filter((r: any) => r && (typeof r.postulante === 'string' || typeof r.name === 'string'))
             .map((r: any) => ({
@@ -146,7 +150,7 @@ export class CvAnalyzerComponent {
               score: this.getScore(r) as number,
               explanation: (r.explanation || r.descripcion || '') as string
             }))
-            .sort((a, b) => b.score - a.score); // 👈 aquí el orden descendente
+            .sort((a, b) => b.score - a.score);
 
           this.cargando = false;
 
@@ -154,7 +158,7 @@ export class CvAnalyzerComponent {
             this.successMsg = 'Análisis completado correctamente.';
           } else {
             this.successMsg = '';
-            this.errorMsg = 'No se recibieron resultados del modelo.';
+            this.errorMsg = 'No se encontraron coincidencias suficientes.';
           }
         } catch (e) {
           this.cargando = false;
@@ -166,5 +170,16 @@ export class CvAnalyzerComponent {
         this.cargando = false;
       }
     });
+  }
+  selectedCandidate: any = null;
+  selectedRank: number = 0;
+
+  verDetalle(candidato: any, index: number) {
+    this.selectedCandidate = candidato;
+    this.selectedRank = index;
+  }
+
+  cerrarDetalle() {
+    this.selectedCandidate = null;
   }
 }

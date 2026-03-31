@@ -1,27 +1,47 @@
-# FrontendCv
+# FrontendCv: Analizador y Ponderador de Hojas de Vida
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+Este proyecto es una aplicación web enfocada en el análisis y ponderación de hojas de vida (CVs), generada con [Angular CLI](https://github.com/angular/angular-cli) versión 14.1.3.
 
-## Development server
+## Servidor de desarrollo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Ejecuta `ng serve` para iniciar un servidor de desarrollo local. Navega a `http://localhost:4200/`. La aplicación se recargará automáticamente si realizas cambios en los archivos fuente.
 
-## Code scaffolding
+## Generación de código (Scaffolding)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Ejecuta `ng generate component nombre-componente` para generar un nuevo componente. También puedes usar `ng generate directive|pipe|service|class|guard|interface|enum|module`. Se recomienda crear los nuevos elementos dentro de sus respectivos módulos en la carpeta `features`.
 
-## Build
+## Construcción (Build)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Ejecuta `ng build` para compilar el proyecto. Los artefactos de compilación se almacenarán en el directorio `dist/` y estarán listos para ser desplegados en tu entorno de producción.
 
-## Running unit tests
+## Pruebas unitarias
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Ejecuta `ng test` para lanzar las pruebas unitarias a través de [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Pruebas de extremo a extremo (e2e)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Ejecuta `ng e2e` para lanzar las pruebas de integración. Para usar este comando, primero necesitas añadir un paquete que implemente capacidades de testing e2e en Angular.
 
-## Further help
+## Más ayuda
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para obtener más información y ayuda sobre el uso de Angular CLI, utiliza el comando `ng help` o visita la página oficial de [Angular CLI Overview and Command Reference](https://angular.io/cli).
+## Estructura del proyecto 
+```
+src/
+├── app/
+│   ├── core/                 (Servicios globales, interceptores, guards)
+│   │   └── services/         (Ej. servicios HTTP genéricos)
+│   ├── shared/               (Componentes UI reutilizables, pipes, directivas)
+│   │   ├── components/       (Ej. botones, modales, alertas)
+│   │   └── models/           (Interfaces genéricas)
+│   └── features/             (Agrupación por módulos de negocio)
+│       └── cv-analyzer/      (Tu módulo principal actual)
+│           ├── components/   (Componentes visuales del analizador)
+│           ├── models/       (Interfaces y tipos específicos del CV)
+│           └── services/     (Servicios que procesan y ponderan los CVs)
+├── assets/
+└── environments/
+```
+
+
+
