@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 interface Testimonial {
   text: string;
@@ -44,9 +46,21 @@ export class LoginComponent implements OnInit {
   error = '';
   showPass = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute  // ← AGREGADO
+  ) { }
 
   ngOnInit(): void {
+    // ← AGREGADO: captura el token que viene de Google OAuth
+    const token = this.route.snapshot.queryParamMap.get('token');
+    if (token) {
+      this.authService.saveToken(token);
+      this.router.navigate(['/cv-analyzer']);
+      return;
+    }
+
     setInterval(() => {
       this.currentTestimonial = (this.currentTestimonial + 1) % this.testimonials.length;
     }, 4000);
@@ -56,25 +70,24 @@ export class LoginComponent implements OnInit {
     e.preventDefault();
     if (!this.email || !this.password) { this.error = 'Por favor completa todos los campos'; return; }
     if (!this.email.includes('@')) { this.error = 'Ingresa un email válido'; return; }
-    
+
     this.loading = true;
     this.error = '';
-    
-    // Simulación de login
-    setTimeout(() => {
-      this.loading = false;
-      this.router.navigate(['/analyzer']); // Navega al analizador tras el login exitoso
-    }, 1800);
+
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: () => {
+        this.router.navigate(['/cv-analyzer']);
+      },
+      error: (err) => {
+        this.error = err.error?.message || 'Credenciales inválidas o cuenta no existe';
+        this.loading = false;
+      }
+    });
   }
 
   handleOAuth(provider: string) {
     this.oauthLoading = provider;
-    
-    // Simulación de login con OAuth
-    setTimeout(() => {
-      this.oauthLoading = '';
-      this.router.navigate(['/analyzer']); // Navega al analizador
-    }, 2000);
+    window.location.href = `${environment.apiUrl}/auth/google`;
   }
 
   get t(): Testimonial {

@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBase: 'https://backend-llm-gpzc.onrender.com'
+  apiBase: 'http://localhost:3010'
 };

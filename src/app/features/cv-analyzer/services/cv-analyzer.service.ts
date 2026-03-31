@@ -12,7 +12,7 @@ export interface EvaluacionRespuesta {
 
 @Injectable({ providedIn: 'root' })
 export class CvAnalyzerService {
-  private url = `${environment.apiBase}/evaluacion/evaluar`;
+  private url = `${environment.apiUrl}/evaluacion/evaluar`;
 
   constructor(private http: HttpClient) {}
 
