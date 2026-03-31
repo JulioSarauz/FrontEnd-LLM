@@ -70,3 +70,5 @@ export class CvDetailComponent implements OnInit {
     return `rgba(0, 229, 192, ${intensity})`;
   }
 }
+
+// esta perfecto, pero el mapa de calor tiene que ser de acuerdo a lo que escribe la persona, al igual que los indicadores del velocimetro ya que esa 
