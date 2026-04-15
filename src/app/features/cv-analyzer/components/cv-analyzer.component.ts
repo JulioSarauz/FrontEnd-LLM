@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CvAnalyzerService, EvaluacionRespuesta } from '../services/cv-analyzer.service';
+// Asegúrate de importar el PagosService que creamos antes
+import { PagosService } from '../../pagos/services/pagos.service';
 
 @Component({
   selector: 'app-cv-analyzer',
@@ -21,12 +23,20 @@ export class CvAnalyzerComponent {
 
   tokens = 10;
   costoAnalisis = 5;
+  
+  // Variables para la pasarela de pagos
   showPlanModal = false;
+  procesandoPago = false;
+  ordenActualId: string | null = null;
+  ordenActualTokens: number = 0; // Para saber cuántos tokens sumar al verificar
 
   selectedCandidate: any = null;
   selectedRank: number = 0;
 
-  constructor(private cvService: CvAnalyzerService) {}
+  constructor(
+    private cvService: CvAnalyzerService,
+    private pagosService: PagosService // Inyectamos el servicio
+  ) {}
 
   onDragOver(evt: DragEvent) {
     evt.preventDefault();
@@ -116,7 +126,7 @@ export class CvAnalyzerComponent {
     this.successMsg = '';
 
     if (this.tokens < this.costoAnalisis) {
-      this.showPlanModal = true;
+      this.abrirModalPlanes();
       return;
     }
 
@@ -139,7 +149,6 @@ export class CvAnalyzerComponent {
       next: (resp: any) => {
         try {
           let payload: any = resp;
-
           if (typeof payload === 'string') {
             try { payload = JSON.parse(payload); } catch {}
           }
@@ -194,16 +203,66 @@ export class CvAnalyzerComponent {
     this.selectedCandidate = null;
   }
 
-  closePlanModal() {
-    this.showPlanModal = false;
+  // --- LÓGICA DE PAGOS ---
+
+  abrirModalPlanes() {
+    this.showPlanModal = true;
+    this.ordenActualId = null;
+    this.procesandoPago = false;
   }
 
-  comprarPlan(tokens: number) {
-    this.tokens += tokens;
+  closePlanModal() {
     this.showPlanModal = false;
-    this.successMsg = `¡Se han añadido ${tokens} tokens a tu cuenta!`;
-    setTimeout(() => {
-      this.successMsg = '';
-    }, 4000);
+    this.ordenActualId = null;
+    this.procesandoPago = false;
+  }
+
+  iniciarCompra(monto: number, tokensAdquirir: number) {
+  this.procesandoPago = true;
+  
+  // MANDAMOS SOLO MONTO Y TOKENS. El usuarioId lo pone el backend desde el JWT.
+  this.pagosService.crearOrden({ monto, tokens: tokensAdquirir } as any).subscribe({
+    next: (res) => {
+      this.ordenActualId = res.orderId;
+      this.ordenActualTokens = tokensAdquirir;
+      const approveLink = res.links.find((l: any) => l.rel === 'approve');
+      if (approveLink) {
+        window.open(approveLink.href, '_blank');
+      }
+      this.procesandoPago = false;
+    },
+    error: (err) => {
+      this.procesandoPago = false;
+      this.errorMsg = 'Error al generar orden de pago.';
+    }
+  });
+}
+
+  verificarPago() {
+    if (!this.ordenActualId) return;
+    
+    this.procesandoPago = true;
+    
+    this.pagosService.capturarOrden(this.ordenActualId).subscribe({
+      next: (res:any) => {
+        // Pago exitoso
+        this.tokens += this.ordenActualTokens;
+        this.successMsg = `¡Pago verificado! Se han añadido ${this.ordenActualTokens} tokens a tu cuenta.`;
+        this.closePlanModal();
+        
+        setTimeout(() => { this.successMsg = ''; }, 5000);
+      },
+      error: (err:any) => {
+        console.error(err);
+        this.procesandoPago = false;
+        // Mantenemos el modal abierto por si aún no aprueba en PayPal
+        alert('El pago aún no se ha reflejado. Asegúrate de haber completado el proceso en la ventana de PayPal antes de verificar.');
+      }
+    });
+  }
+
+  cancelarOrden() {
+    this.ordenActualId = null;
+    this.procesandoPago = false;
   }
 }

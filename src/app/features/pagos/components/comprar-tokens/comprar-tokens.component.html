@@ -1,0 +1,32 @@
+<div class="pagos-container">
+  <h2>Recarga tus Tokens</h2>
+
+  <div *ngIf="mensaje" class="alerta">
+    {{ mensaje }}
+  </div>
+
+  <div *ngIf="!ordenActualId" class="planes-grid">
+    <div class="plan-card" *ngFor="let plan of planes">
+      <h3>Plan {{ plan.nombre }}</h3>
+      <p class="precio">${{ plan.monto }} USD</p>
+      <p class="tokens">{{ plan.tokens }} Tokens</p>
+      <button class="btn-comprar" [disabled]="cargando" (click)="iniciarCompra(plan)">
+        Comprar con PayPal
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="ordenActualId" class="verificacion-container">
+    <h3>Paso Final</h3>
+    <p>Si ya autorizaste el pago en la pestaña de PayPal, haz clic en el botón de abajo para liberar tus tokens.</p>
+    
+    <div class="acciones">
+      <button class="btn-verificar" [disabled]="cargando" (click)="verificarPago()">
+        Verificar Pago
+      </button>
+      <button class="btn-cancelar" [disabled]="cargando" (click)="ordenActualId = null">
+        Cancelar / Volver
+      </button>
+    </div>
+  </div>
+</div>
