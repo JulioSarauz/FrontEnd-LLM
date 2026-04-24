@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +55,9 @@ export class AuthService {
 
   getPerfil() {
     return this.http.get<any>(`${this.apiUrl}/profile`);
+  }
+  // Añade este método en tu auth.service.ts de Angular
+  verifyOtp(data: { email: string, otp: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/verify-otp`, data);
   }
 }

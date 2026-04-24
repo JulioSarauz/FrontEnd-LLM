@@ -88,17 +88,6 @@
             Continuar con Google
           </ng-template>
         </button>
-
-        <button (click)="handleOAuth('microsoft')" [disabled]="oauthLoading || loading"
-                class="w-full flex items-center justify-center gap-3 px-4 py-3.5 bg-white/[0.04] border border-white/8 rounded-xl text-sm font-semibold text-white/80 hover:bg-white/[0.07] hover:border-white/15 transition-all disabled:opacity-60">
-           <ng-container *ngIf="oauthLoading === 'microsoft'; else msIcon">
-            <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Conectando con Microsoft...
-          </ng-container>
-          <ng-template #msIcon>
-            <svg width="18" height="18" viewBox="0 0 23 23"><path fill="#f25022" d="M1 1h10v10H1z"/><path fill="#00a4ef" d="M12 1h10v10H12z"/><path fill="#7fba00" d="M1 12h10v10H1z"/><path fill="#ffb900" d="M12 12h10v10H12z"/></svg>
-            Continuar con Microsoft
-          </ng-template>
-        </button>
       </div>
 
       <div class="flex items-center gap-3 mb-6">
@@ -115,10 +104,7 @@
                  class="w-full px-4 py-3.5 bg-white/[0.04] border border-white/8 rounded-xl text-sm text-white placeholder-white/20 focus:outline-none focus:border-[#5b6af0]/60 focus:bg-white/[0.06] transition-all">
         </div>
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-bold text-white/40 uppercase tracking-wider">Contraseña</label>
-            <a href="#" class="text-xs text-[#5b6af0] hover:text-[#7c8ff5] font-medium transition-colors">¿Olvidaste tu contraseña?</a>
-          </div>
+          <label class="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Contraseña</label>
           <div class="relative">
             <input [type]="showPass ? 'text' : 'password'" [(ngModel)]="password" name="password" (input)="error = ''"
                    placeholder="••••••••"
