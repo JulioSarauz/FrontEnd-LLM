@@ -8,13 +8,22 @@ export interface EvaluacionRespuesta {
   postulante: string;
   score: number;
   explanation: string;
+  scoreTecnico?: number;
+  scoreExperiencia?: number;
+  scoreBlando?: number;
+  heatmapData?: any[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class CvAnalyzerService {
-  private url = `${environment.apiUrl}/evaluacion/evaluar`;
+  private url = `${environment.apiUrl}/evaluacion`;
 
   constructor(private http: HttpClient) {}
+
+  obtenerHistorial(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/historial`)
+      .pipe(catchError(this.handleError));
+  }
 
   evaluarCVs(
     files: File[],
@@ -25,7 +34,7 @@ export class CvAnalyzerService {
     formData.append('keywords', JSON.stringify(keywords));
 
     return this.http
-      .post<EvaluacionRespuesta | EvaluacionRespuesta[]>(this.url, formData)
+      .post<EvaluacionRespuesta | EvaluacionRespuesta[]>(`${this.url}/evaluar`, formData)
       .pipe(catchError(this.handleError));
   }
 

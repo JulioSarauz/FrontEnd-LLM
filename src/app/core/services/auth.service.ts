@@ -24,7 +24,6 @@ export class AuthService {
     );
   }
 
-  // ← AGREGADO: guarda el token que viene de Google OAuth
   saveToken(token: string): void {
     localStorage.setItem('botisfy_token', token);
   }
@@ -51,5 +50,9 @@ export class AuthService {
   getUser(): any {
     const user = localStorage.getItem('botisfy_user');
     return user ? JSON.parse(user) : null;
+  }
+
+  getPerfil() {
+    return this.http.get<any>(`${this.apiUrl}/profile`);
   }
 }

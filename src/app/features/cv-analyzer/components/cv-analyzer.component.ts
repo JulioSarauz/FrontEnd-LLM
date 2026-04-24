@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CvAnalyzerService, EvaluacionRespuesta } from '../services/cv-analyzer.service';
-// Asegúrate de importar el PagosService que creamos antes
 import { PagosService } from '../../pagos/services/pagos.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-cv-analyzer',
   templateUrl: './cv-analyzer.component.html',
   styleUrls: ['./cv-analyzer.component.css']
 })
-export class CvAnalyzerComponent {
+export class CvAnalyzerComponent implements OnInit {
   archivos: File[] = [];
   keywords: string[] = [];
   nuevaKeyword = '';
@@ -21,22 +21,94 @@ export class CvAnalyzerComponent {
   fechaActual = new Date();
   analisisEjecutado = false;
 
-  tokens = 10;
+  tokens = 0;
   costoAnalisis = 5;
+  nombreUsuario = '';
+  inicialesUsuario = '';
+  showUserMenu = false;
   
-  // Variables para la pasarela de pagos
   showPlanModal = false;
   procesandoPago = false;
   ordenActualId: string | null = null;
-  ordenActualTokens: number = 0; // Para saber cuántos tokens sumar al verificar
+  ordenActualTokens: number = 0;
 
   selectedCandidate: any = null;
   selectedRank: number = 0;
 
+  showHistorialModal = false;
+  cargandoHistorial = false;
+  historialEvaluaciones: any[] = [];
+
   constructor(
     private cvService: CvAnalyzerService,
-    private pagosService: PagosService // Inyectamos el servicio
+    private pagosService: PagosService,
+    private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.cargarDatosEstaticosUsuario();
+    this.actualizarTokensDesdeBD();
+  }
+
+  cargarDatosEstaticosUsuario() {
+    const token = localStorage.getItem('botisfy_token') || localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.nombreUsuario = payload.name || payload.given_name || payload.email || 'Usuario';
+        const partes = this.nombreUsuario.split(/[\s.@]+/);
+        this.inicialesUsuario = partes.slice(0, 2).map(p => p[0]?.toUpperCase() || '').join('');
+      } catch (e) {
+        this.nombreUsuario = 'Usuario';
+        this.inicialesUsuario = 'US';
+      }
+    }
+  }
+
+  actualizarTokensDesdeBD() {
+    this.authService.getPerfil().subscribe({
+      next: (perfil: any) => {
+        this.tokens = perfil.tokens || 0;
+      },
+      error: () => {
+        this.tokens = 0;
+      }
+    });
+  }
+
+  cerrarSesion() {
+    this.showUserMenu = false;
+    localStorage.removeItem('token');
+    localStorage.removeItem('botisfy_token');
+    this.authService.logout();
+  }
+
+  abrirHistorial() {
+    this.showHistorialModal = true;
+    this.cargandoHistorial = true;
+    this.cvService.obtenerHistorial().subscribe({
+      next: (data) => {
+        this.historialEvaluaciones = data;
+        this.cargandoHistorial = false;
+      },
+      error: (err) => {
+        this.errorMsg = 'Error al cargar el historial.';
+        this.cargandoHistorial = false;
+      }
+    });
+  }
+
+  cerrarHistorial() {
+    this.showHistorialModal = false;
+  }
+
+  cargarResultadosDelHistorial(evaluacion: any) {
+    this.keywords = evaluacion.keywords || [];
+    this.resultados = evaluacion.resultados || [];
+    this.analisisEjecutado = true;
+    this.archivos = new Array(this.resultados.length).fill({name: 'Documento Analizado (Historial)'});
+    this.cerrarHistorial();
+  }
 
   onDragOver(evt: DragEvent) {
     evt.preventDefault();
@@ -65,10 +137,22 @@ export class CvAnalyzerComponent {
   }
 
   private handleFiles(files: FileList | File[]) {
+    const todosArchivos = Array.from(files);
+    const pdfs = todosArchivos.filter(f => f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+
+    if (pdfs.length < todosArchivos.length) {
+      this.errorMsg = 'Solo se permiten archivos en formato PDF.';
+      return;
+    }
+
+    if (this.archivos.length + pdfs.length > 5) {
+      this.errorMsg = 'Solo puedes subir un máximo de 5 currículums a la vez para el análisis.';
+      return;
+    }
+
     this.isUploading = true;
-    const nuevosArchivos = Array.from(files);
     setTimeout(() => {
-      this.archivos = [...this.archivos, ...nuevosArchivos];
+      this.archivos = [...this.archivos, ...pdfs];
       this.successMsg = `${this.archivos.length} archivo(s) listo(s).`;
       this.errorMsg = '';
       this.isUploading = false;
@@ -77,14 +161,21 @@ export class CvAnalyzerComponent {
 
   removeFile(i: number) {
     this.archivos.splice(i, 1);
+    if (this.archivos.length === 0) {
+      this.successMsg = '';
+    } else {
+      this.successMsg = `${this.archivos.length} archivo(s) listo(s).`;
+    }
   }
 
   clearFiles() {
     this.archivos = [];
+    this.keywords = [];
     this.resultados = [];
     this.analisisEjecutado = false;
     this.successMsg = '';
     this.errorMsg = '';
+    this.selectedCandidate = null;
   }
 
   addKeywordFromInput() {
@@ -131,10 +222,10 @@ export class CvAnalyzerComponent {
     }
 
     this.resultados = [];
-    this.analisisEjecutado = true;
+    this.analisisEjecutado = false;
 
     if (this.archivos.length === 0) {
-      this.errorMsg = 'Por favor, agrega al menos un archivo (PDF/DOCX/TXT).';
+      this.errorMsg = 'Por favor, agrega al menos un archivo (PDF).';
       return;
     }
     if (this.keywords.length === 0) {
@@ -142,7 +233,6 @@ export class CvAnalyzerComponent {
       return;
     }
 
-    this.tokens -= this.costoAnalisis;
     this.cargando = true;
 
     this.cvService.evaluarCVs(this.archivos, this.keywords).subscribe({
@@ -169,14 +259,20 @@ export class CvAnalyzerComponent {
             .map((r: any) => ({
               postulante: (r.postulante || r.name || 'Postulante') as string,
               score: this.getScore(r) as number,
-              explanation: (r.explanation || r.descripcion || '') as string
+              explanation: (r.explanation || r.descripcion || '') as string,
+              scoreTecnico: r.scoreTecnico,
+              scoreExperiencia: r.scoreExperiencia,
+              scoreBlando: r.scoreBlando,
+              heatmapData: r.heatmapData
             }))
             .sort((a, b) => b.score - a.score);
 
           this.cargando = false;
 
           if (this.resultados.length > 0) {
+            this.analisisEjecutado = true;
             this.successMsg = 'Análisis completado correctamente.';
+            this.actualizarTokensDesdeBD();
           } else {
             this.successMsg = '';
             this.errorMsg = 'No se encontraron coincidencias suficientes.';
@@ -189,7 +285,6 @@ export class CvAnalyzerComponent {
       error: (err) => {
         this.errorMsg = err?.message || 'Error al analizar los CVs.';
         this.cargando = false;
-        this.tokens += this.costoAnalisis;
       }
     });
   }
@@ -202,8 +297,6 @@ export class CvAnalyzerComponent {
   cerrarDetalle() {
     this.selectedCandidate = null;
   }
-
-  // --- LÓGICA DE PAGOS ---
 
   abrirModalPlanes() {
     this.showPlanModal = true;
@@ -218,25 +311,24 @@ export class CvAnalyzerComponent {
   }
 
   iniciarCompra(monto: number, tokensAdquirir: number) {
-  this.procesandoPago = true;
-  
-  // MANDAMOS SOLO MONTO Y TOKENS. El usuarioId lo pone el backend desde el JWT.
-  this.pagosService.crearOrden({ monto, tokens: tokensAdquirir } as any).subscribe({
-    next: (res) => {
-      this.ordenActualId = res.orderId;
-      this.ordenActualTokens = tokensAdquirir;
-      const approveLink = res.links.find((l: any) => l.rel === 'approve');
-      if (approveLink) {
-        window.open(approveLink.href, '_blank');
+    this.procesandoPago = true;
+    
+    this.pagosService.crearOrden({ monto, tokens: tokensAdquirir } as any).subscribe({
+      next: (res) => {
+        this.ordenActualId = res.orderId;
+        this.ordenActualTokens = tokensAdquirir;
+        const approveLink = res.links.find((l: any) => l.rel === 'approve');
+        if (approveLink) {
+          window.open(approveLink.href, '_blank');
+        }
+        this.procesandoPago = false;
+      },
+      error: (err) => {
+        this.procesandoPago = false;
+        this.errorMsg = 'Error al generar orden de pago.';
       }
-      this.procesandoPago = false;
-    },
-    error: (err) => {
-      this.procesandoPago = false;
-      this.errorMsg = 'Error al generar orden de pago.';
-    }
-  });
-}
+    });
+  }
 
   verificarPago() {
     if (!this.ordenActualId) return;
@@ -245,17 +337,14 @@ export class CvAnalyzerComponent {
     
     this.pagosService.capturarOrden(this.ordenActualId).subscribe({
       next: (res:any) => {
-        // Pago exitoso
-        this.tokens += this.ordenActualTokens;
-        this.successMsg = `¡Pago verificado! Se han añadido ${this.ordenActualTokens} tokens a tu cuenta.`;
+        this.successMsg = `¡Pago verificado exitosamente!`;
+        this.actualizarTokensDesdeBD();
         this.closePlanModal();
         
         setTimeout(() => { this.successMsg = ''; }, 5000);
       },
       error: (err:any) => {
-        console.error(err);
         this.procesandoPago = false;
-        // Mantenemos el modal abierto por si aún no aprueba en PayPal
         alert('El pago aún no se ha reflejado. Asegúrate de haber completado el proceso en la ventana de PayPal antes de verificar.');
       }
     });

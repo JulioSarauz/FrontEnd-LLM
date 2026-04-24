@@ -49,13 +49,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute  // ← AGREGADO
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    // ← AGREGADO: captura el token que viene de Google OAuth
     const token = this.route.snapshot.queryParamMap.get('token');
     if (token) {
+      localStorage.setItem('token', token);
       this.authService.saveToken(token);
       this.router.navigate(['/cv-analyzer']);
       return;

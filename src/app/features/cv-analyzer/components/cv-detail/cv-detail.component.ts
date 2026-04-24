@@ -17,11 +17,18 @@ export class CvDetailComponent implements OnInit {
   heatmapData: any[] = [];
 
   ngOnInit() {
+    // Tomamos los valores reales que vienen de Gemini (o 0 si fallan)
     this.scoreGlobal = this.getScore(this.candidato?.score);
-    this.scoreTecnico = Math.min(100, this.scoreGlobal + Math.floor(Math.random() * 10));
-    this.scoreExperiencia = Math.max(0, this.scoreGlobal - (this.rank * 3));
-    this.scoreBlando = Math.min(100, this.scoreGlobal + (Math.random() * 15 - 5));
-    this.generateHeatmap();
+    this.scoreTecnico = this.getScore(this.candidato?.scoreTecnico);
+    this.scoreExperiencia = this.getScore(this.candidato?.scoreExperiencia);
+    this.scoreBlando = this.getScore(this.candidato?.scoreBlando);
+    
+    // Si Gemini devolvió datos de heatmap, los usamos. Si no, generamos uno por defecto de seguridad
+    if (this.candidato?.heatmapData && Array.isArray(this.candidato.heatmapData)) {
+      this.heatmapData = this.candidato.heatmapData;
+    } else {
+      this.generateFallbackHeatmap();
+    }
   }
 
   getScore(score: any): number {
@@ -41,16 +48,17 @@ export class CvDetailComponent implements OnInit {
     return '#ff5c7a';
   }
 
-  getRotation(val: number): number {
-    return (val * 1.8) - 90;
-  }
-
   getDashOffset(val: number): number {
     return 157 - (157 * val / 100);
   }
 
-  generateHeatmap() {
-    const categories = ['Frontend', 'Backend', 'Arquitectura', 'Bases de Datos', 'DevOps', 'Agile'];
+  getHeatmapColor(intensity: number): string {
+    // Usamos el color de la marca (Verde agua) basado en la intensidad
+    return `rgba(0, 229, 192, ${Math.max(0.1, intensity)})`;
+  }
+
+  generateFallbackHeatmap() {
+    const categories = ['Afinidad General', 'Requisitos Cumplidos'];
     const blocks = [1, 2, 3, 4, 5, 6, 7, 8];
     
     this.heatmapData = categories.map(cat => {
@@ -58,15 +66,9 @@ export class CvDetailComponent implements OnInit {
         category: cat,
         cells: blocks.map(() => {
           const base = this.scoreGlobal / 100;
-          const variance = Math.random() * 0.5 - 0.2;
-          const intensity = Math.min(1, Math.max(0.05, base + variance));
-          return intensity;
+          return Math.min(1, Math.max(0.1, base));
         })
       };
     });
-  }
-
-  getHeatmapColor(intensity: number): string {
-    return `rgba(0, 229, 192, ${intensity})`;
   }
 }
